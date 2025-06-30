@@ -1,6 +1,8 @@
 import { useActionState } from 'react';
 import './App.css';
 import { useDispatch } from 'react-redux';
+import { handleLoginSucceeds } from './redux/auth/slice';
+import { fetchData } from './utils/httpUtils';
 
 function App() {
   const [isLoggedIn, formAction, isPending] = useActionState(
@@ -12,8 +14,8 @@ function App() {
 
   async function handleLogin(_: boolean, formData: FormData): Promise<boolean> {
     try {
-      const response = await fetch(
-        'http://localhost:8080/auth/backoffice/login',
+      const data = await fetchData<{ accessToken: string }>(
+        'https://boardgames-bje7.onrender.com/auth/backoffice/login',
         {
           method: 'POST',
           headers: {
@@ -26,14 +28,13 @@ function App() {
           }),
         }
       );
-      if (!response.ok) {
-        throw new Error('Login failed');
+
+      if (!data.accessToken) {
+        throw new Error('No access token received');
       }
-      const data = await response.json();
-      console.log('Login successful:', data);
 
       dispatch({
-        type: 'auth/handleLoginSucceeds',
+        type: handleLoginSucceeds.type,
         payload: {
           authToken: data.accessToken,
           expirationAt: '',
