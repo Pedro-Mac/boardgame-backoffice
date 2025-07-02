@@ -1,4 +1,4 @@
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch } from '../../../redux/hooks';
 import { handleLogin } from '@/redux/auth/slice';
 import { useState } from 'react';
 
@@ -7,7 +7,10 @@ export const useLogin = () => {
   const [isPending, setIsPending] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const formAction = async (formData: FormData) => {
+  //const formAction = async (formData: FormData) => {
+  const formAction = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
     setIsPending(true);
     try {
       const resultAction = await dispatch(handleLogin(formData));

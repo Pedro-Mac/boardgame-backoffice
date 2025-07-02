@@ -9,7 +9,7 @@ const Login = () => {
     <div>
       <h2>Login</h2>
       {isPending ? <p>Loading...</p> : null}
-      <form action={formAction}>
+      <form onSubmit={formAction}>
         <div className='mb-4'>
           <Label className='mb-1' htmlFor='email'>
             Email
