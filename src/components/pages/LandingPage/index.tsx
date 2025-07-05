@@ -1,12 +1,12 @@
 import { Link } from 'react-router';
 
-const Home = () => {
+const LandingPage = () => {
   return (
     <div>
-      <h1>Home</h1>
+      <h1>LandingPage</h1>
       <Link to='/login'>Login</Link>
     </div>
   );
 };
 
-export default Home;
+export default LandingPage;
