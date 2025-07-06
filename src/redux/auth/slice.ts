@@ -1,3 +1,4 @@
+import { fetchData } from '@/api/api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export interface AuthState {
@@ -16,20 +17,13 @@ export const checkAuthStatus = createAsyncThunk(
   'auth/checkAuthStatus',
   async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
-        {
-          method: 'POST',
-          credentials: 'include',
-        }
-      );
-      if (!response.ok) {
-        throw new Error('Failed to check authentication status');
-      }
-      return response.json();
+      return fetchData(`/auth/refresh-token`, {
+        method: 'POST',
+        credentials: 'include',
+      });
     } catch (error) {
       console.error('Error checking authentication status:', error);
-      return; // Return false if there's an error
+      return;
     }
   }
 );
@@ -38,21 +32,17 @@ export const handleLogin = createAsyncThunk(
   'auth/handleLogin',
   async (formData: FormData) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/backoffice/login`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({
-            email: formData.get('email'),
-            password: formData.get('password'),
-          }),
-        }
-      );
-      return response.json();
+      return fetchData(`/auth/backoffice/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: formData.get('email'),
+          password: formData.get('password'),
+        }),
+      });
     } catch (error) {
       console.error('Login failed:', error);
       return null;
