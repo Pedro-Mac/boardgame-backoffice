@@ -7,7 +7,6 @@ export const useLogin = () => {
   const [isPending, setIsPending] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  //const formAction = async (formData: FormData) => {
   const formAction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
