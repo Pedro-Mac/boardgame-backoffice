@@ -19,23 +19,21 @@ function App() {
   }, [checkAuthStatusCb]);
 
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<LandingPage />} />
-          <Route path='/login' element={<Login />} />
-          <Route
-            path='/home'
-            element={
-              <ProtectedRoute isAuthenticated={false}>
-                <LandingPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path='*' element={<div>404 Not Found</div>} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/login' element={<Login />} />
+        <Route
+          path='/home'
+          element={
+            <ProtectedRoute>
+              <LandingPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='*' element={<div>404 Not Found</div>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
