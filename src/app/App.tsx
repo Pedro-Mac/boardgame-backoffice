@@ -6,6 +6,7 @@ import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { useCallback, useEffect } from 'react';
 import { checkAuthStatus } from '@/redux/auth/slice';
 import { useAppDispatch } from '@/redux/hooks';
+import Home from '@/components/pages/Home';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -23,14 +24,11 @@ function App() {
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/login' element={<Login />} />
-        <Route
-          path='/home'
-          element={
-            <ProtectedRoute>
-              <LandingPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route path='/home' element={<Home />} />
+          <Route path='/games' element={<Home />} />
+          <Route path='/users' element={<Home />} />
+        </Route>
         <Route path='*' element={<div>404 Not Found</div>} />
       </Routes>
     </BrowserRouter>
