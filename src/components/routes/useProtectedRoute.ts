@@ -19,7 +19,6 @@ export const useProtectedRoute = () => {
   ];
 
   const getTitle = (): string => {
-    console.log('params', location);
     const title = titles.find((title) =>
       location.pathname.includes(title.path)
     )?.title;
