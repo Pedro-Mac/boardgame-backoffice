@@ -57,11 +57,15 @@ export const authSlice = createSlice({
     builder.addCase(handleLogin.fulfilled, (state, action) => {
       if (action.payload && typeof action.payload === 'object') {
         state.isAuthenticated = true;
+        state.isLoading = false;
+        state.error = null;
       }
     });
 
     builder.addCase(handleLogin.rejected, (state) => {
       state.isAuthenticated = false;
+      state.isLoading = false;
+      state.error = 'Login failed. Please check your credentials.';
     });
 
     builder.addCase(checkAuthStatus.pending, (state) => {

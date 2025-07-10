@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import Login from '../components/pages/Login';
 import LandingPage from '../components/pages/LandingPage';
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { checkAuthStatus } from '@/redux/auth/slice';
 import { useAppDispatch } from '@/redux/hooks';
 import Home from '@/components/pages/Home';
@@ -13,13 +13,9 @@ import Users from '@/components/pages/Users';
 function App() {
   const dispatch = useAppDispatch();
 
-  const checkAuthStatusCb = useCallback(async () => {
-    return dispatch(checkAuthStatus());
-  }, [dispatch]);
-
   useEffect(() => {
-    checkAuthStatusCb();
-  }, [checkAuthStatusCb]);
+    dispatch(checkAuthStatus());
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
