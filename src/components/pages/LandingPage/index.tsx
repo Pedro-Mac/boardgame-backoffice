@@ -1,10 +1,20 @@
+import type { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 const LandingPage = () => {
+  const { isAuthenticated, isLoading } = useSelector(
+    (state: RootState) => state.auth
+  );
   return (
     <div>
       <h1>LandingPage</h1>
-      <Link to='/login'>Login</Link>
+      {isLoading ? (
+        <div>
+          <span>Loading</span>
+        </div>
+      ) : null}
+      {isLoading || isAuthenticated ? null : <Link to='/login'>Login</Link>}
     </div>
   );
 };
