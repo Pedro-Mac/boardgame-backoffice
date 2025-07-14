@@ -1,6 +1,7 @@
 import { useAppDispatch } from '../../../redux/hooks';
 import { handleLogin } from '@/redux/auth/slice';
 import type { RootState } from '@/redux/store';
+import { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -11,6 +12,12 @@ export const useLogin = () => {
   );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/home');
+    }
+  }, [isAuthenticated, navigate]);
 
   const formAction = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

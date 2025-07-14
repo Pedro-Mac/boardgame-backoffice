@@ -1,7 +1,6 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import Login from '../components/pages/Login';
-import LandingPage from '../components/pages/LandingPage';
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { useEffect } from 'react';
 import { checkAuthStatus } from '@/redux/auth/slice';
@@ -20,7 +19,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<LandingPage />} />
+        <Route path='/' element={<Login />} />
         <Route path='/login' element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path='/home' element={<Home />} />

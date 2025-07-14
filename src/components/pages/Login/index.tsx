@@ -7,7 +7,6 @@ import { Loader2Icon } from 'lucide-react';
 const Login = () => {
   const { formAction, isLoading } = useLogin();
 
-  console.log({ isLoading });
   return (
     <div>
       <h2>Login</h2>
