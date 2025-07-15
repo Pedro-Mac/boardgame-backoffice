@@ -2,7 +2,7 @@ import type { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router';
 import Sidebar from '../sections/Sidebar';
-import { SidebarProvider } from '../ui/sidebar';
+import { SidebarContent, SidebarProvider } from '../ui/sidebar';
 import { useProtectedRoute } from './useProtectedRoute';
 
 const ProtectedRoute = () => {

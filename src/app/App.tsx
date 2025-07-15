@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import Login from '../components/pages/Login';
 import ProtectedRoute from '@/components/routes/ProtectedRoute';
 import { useEffect } from 'react';
@@ -16,20 +16,39 @@ function App() {
     dispatch(checkAuthStatus());
   }, [dispatch]);
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/login' element={<Login />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />} />
-          <Route path='/games' element={<Games />} />
-          <Route path='/users' element={<Users />} />
-        </Route>
-        <Route path='*' element={<div>404 Not Found</div>} />
-      </Routes>
-    </BrowserRouter>
-  );
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      Component: Login,
+    },
+    {
+      path: '/login',
+      Component: Login,
+    },
+    {
+      Component: ProtectedRoute,
+      children: [
+        {
+          path: '/home',
+          Component: Home,
+        },
+        {
+          path: '/games',
+          Component: Games,
+        },
+        {
+          path: '/users',
+          Component: Users,
+        },
+      ],
+    },
+    {
+      path: '*',
+      element: <div>404 Not Found</div>,
+    },
+  ]);
+
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
