@@ -1,24 +1,12 @@
-import type { RootState } from '@/redux/store';
-import { useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router';
+// import type { RootState } from '@/redux/store';
+// import { useSelector } from 'react-redux';
+import { Outlet } from 'react-router';
 import Sidebar from '../sections/Sidebar';
 import { SidebarContent, SidebarProvider } from '../ui/sidebar';
 import { useProtectedRoute } from './useProtectedRoute';
 
 const ProtectedRoute = () => {
-  const { isAuthenticated, isLoading } = useSelector(
-    (state: RootState) => state.auth
-  );
-
   const { getTitle } = useProtectedRoute();
-
-  if (isLoading) {
-    return <div>Loading...</div>; // You can replace this with a spinner or loading component
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
-  }
 
   return (
     <SidebarProvider>
@@ -28,7 +16,9 @@ const ProtectedRoute = () => {
           {getTitle()}
         </h2>
         <main>
-          <Outlet />
+          <SidebarContent>
+            <Outlet />
+          </SidebarContent>
         </main>
       </div>
     </SidebarProvider>
