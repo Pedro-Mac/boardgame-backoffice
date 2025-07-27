@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { loginUser } from '@/services/auth/login';
 import { useAuthStore } from '@/store/auth';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -18,29 +19,17 @@ function Index() {
     event.preventDefault();
     setLoading(true);
     // Simulate an async operation
-    const response = await fetch(
-      'https://api.tabletopburrow.com/auth/backoffice/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include',
-      }
-    );
 
-    console.log('Response:', response);
+    const user = await loginUser(email, password);
 
-    const data = await response.json();
+    console.log('Response:', user);
 
-    setLoading(false);
     setUser({
-      id: data.user.id,
+      id: user.id,
       email: email,
-      name: data.user.name,
+      name: user.name,
     });
-
+    setLoading(false);
     navigate({ to: '/admin/users' });
   };
 
