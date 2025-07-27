@@ -1,12 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { loginUser } from '@/services/auth/login';
+import { refreshToken } from '@/services/auth/refreshToken';
 import { useAuthStore } from '@/store/auth';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/')({
   component: Index,
+  loader: refreshToken,
+  onError: ({ error }) => {
+    // Log the error
+    console.error(error);
+  },
 });
 
 function Index() {
@@ -18,11 +24,8 @@ function Index() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    // Simulate an async operation
 
     const user = await loginUser(email, password);
-
-    console.log('Response:', user);
 
     setUser({
       id: user.id,
@@ -47,30 +50,28 @@ function Index() {
   };
 
   return (
-    <>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <Input
-            type='email'
-            placeholder='Email'
-            className='mb-2'
-            name='email'
-            value={email}
-            onChange={handleInputChange}
-          />
-          <Input
-            type='password'
-            placeholder='Password'
-            className='mb-2'
-            name='password'
-            value={password}
-            onChange={handleInputChange}
-          />
-          <Button variant='secondary' disabled={isLoading}>
-            Submit
-          </Button>
-        </form>
-      </main>
-    </>
+    <main>
+      <form onSubmit={handleSubmit}>
+        <Input
+          type='email'
+          placeholder='Email'
+          className='mb-2'
+          name='email'
+          value={email}
+          onChange={handleInputChange}
+        />
+        <Input
+          type='password'
+          placeholder='Password'
+          className='mb-2'
+          name='password'
+          value={password}
+          onChange={handleInputChange}
+        />
+        <Button variant='secondary' disabled={isLoading}>
+          Submit
+        </Button>
+      </form>
+    </main>
   );
 }

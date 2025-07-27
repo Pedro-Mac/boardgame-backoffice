@@ -12,6 +12,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GamesRouteImport } from './routes/games'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLayoutRouteImport } from './routes/auth/_layout'
@@ -27,6 +28,11 @@ const AuthRoute = AuthRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -51,6 +57,7 @@ const AdminUsersRoute = AdminUsersRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/games': typeof GamesRoute
   '/login': typeof LoginRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth': typeof AuthLayoutRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/games': typeof GamesRoute
   '/login': typeof LoginRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth': typeof AuthLayoutRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/games': typeof GamesRoute
   '/login': typeof LoginRoute
   '/admin/users': typeof AdminUsersRoute
   '/auth': typeof AuthRouteWithChildren
@@ -74,12 +83,19 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/admin/users' | '/auth' | '/auth/signup'
+  fullPaths:
+    | '/'
+    | '/games'
+    | '/login'
+    | '/admin/users'
+    | '/auth'
+    | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/admin/users' | '/auth' | '/auth/signup'
+  to: '/' | '/games' | '/login' | '/admin/users' | '/auth' | '/auth/signup'
   id:
     | '__root__'
     | '/'
+    | '/games'
     | '/login'
     | '/admin/users'
     | '/auth'
@@ -89,6 +105,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GamesRoute: typeof GamesRoute
   LoginRoute: typeof LoginRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AuthRoute: typeof AuthRouteWithChildren
@@ -108,6 +125,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -155,6 +179,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GamesRoute: GamesRoute,
   LoginRoute: LoginRoute,
   AdminUsersRoute: AdminUsersRoute,
   AuthRoute: AuthRouteWithChildren,
