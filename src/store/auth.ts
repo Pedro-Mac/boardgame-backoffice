@@ -1,16 +1,16 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 
 interface AuthState {
   user: {
-    id: string;
-    email: string;
-    name: string;
-  } | null;
+    id: string
+    email: string
+    name: string
+  } | null
 
-  isLoading: boolean;
-  setLoading: (loading: boolean) => void;
-  setUser: (user: { id: string; email: string; name: string }) => void;
+  isLoading: boolean
+  setLoading: (loading: boolean) => void
+  setUser: (user: { id: string; email: string; name: string }) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -22,6 +22,4 @@ export const useAuthStore = create<AuthState>()(
     setUser: (user: { id: string; email: string; name: string }) =>
       set({ user }),
   }))
-);
-
-useAuthStore.devtools.cleanup();
+)
