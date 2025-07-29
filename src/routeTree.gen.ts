@@ -16,13 +16,21 @@ import { Route as GamesRouteImport } from './routes/games'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as AuthLayoutRouteImport } from './routes/auth/_layout'
-import { Route as AdminUsersRouteImport } from './routes/admin/users'
+import { Route as AdminProtectedRouteRouteImport } from './routes/admin/_protectedRoute'
+import { Route as AdminProtectedRouteUsersRouteImport } from './routes/admin/_protectedRoute/users'
+import { Route as AdminProtectedRouteGamesRouteImport } from './routes/admin/_protectedRoute/games'
 
 const AuthRouteImport = createFileRoute('/auth')()
+const AdminRouteImport = createFileRoute('/admin')()
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -49,37 +57,55 @@ const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => AuthRoute,
 } as any)
-const AdminUsersRoute = AdminUsersRouteImport.update({
-  id: '/admin/users',
-  path: '/admin/users',
-  getParentRoute: () => rootRouteImport,
+const AdminProtectedRouteRoute = AdminProtectedRouteRouteImport.update({
+  id: '/_protectedRoute',
+  getParentRoute: () => AdminRoute,
 } as any)
+const AdminProtectedRouteUsersRoute =
+  AdminProtectedRouteUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
+const AdminProtectedRouteGamesRoute =
+  AdminProtectedRouteGamesRouteImport.update({
+    id: '/games',
+    path: '/games',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/games': typeof GamesRoute
   '/login': typeof LoginRoute
-  '/admin/users': typeof AdminUsersRoute
+  '/admin': typeof AdminProtectedRouteRouteWithChildren
   '/auth': typeof AuthLayoutRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/admin/games': typeof AdminProtectedRouteGamesRoute
+  '/admin/users': typeof AdminProtectedRouteUsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/games': typeof GamesRoute
   '/login': typeof LoginRoute
-  '/admin/users': typeof AdminUsersRoute
+  '/admin': typeof AdminProtectedRouteRouteWithChildren
   '/auth': typeof AuthLayoutRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/admin/games': typeof AdminProtectedRouteGamesRoute
+  '/admin/users': typeof AdminProtectedRouteUsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/games': typeof GamesRoute
   '/login': typeof LoginRoute
-  '/admin/users': typeof AdminUsersRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/admin/_protectedRoute': typeof AdminProtectedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/auth/_layout': typeof AuthLayoutRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/admin/_protectedRoute/games': typeof AdminProtectedRouteGamesRoute
+  '/admin/_protectedRoute/users': typeof AdminProtectedRouteUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,27 +113,40 @@ export interface FileRouteTypes {
     | '/'
     | '/games'
     | '/login'
-    | '/admin/users'
+    | '/admin'
     | '/auth'
     | '/auth/signup'
+    | '/admin/games'
+    | '/admin/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/games' | '/login' | '/admin/users' | '/auth' | '/auth/signup'
+  to:
+    | '/'
+    | '/games'
+    | '/login'
+    | '/admin'
+    | '/auth'
+    | '/auth/signup'
+    | '/admin/games'
+    | '/admin/users'
   id:
     | '__root__'
     | '/'
     | '/games'
     | '/login'
-    | '/admin/users'
+    | '/admin'
+    | '/admin/_protectedRoute'
     | '/auth'
     | '/auth/_layout'
     | '/auth/signup'
+    | '/admin/_protectedRoute/games'
+    | '/admin/_protectedRoute/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GamesRoute: typeof GamesRoute
   LoginRoute: typeof LoginRoute
-  AdminUsersRoute: typeof AdminUsersRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
 }
 
@@ -118,6 +157,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -155,15 +201,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLayoutRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/admin/users': {
-      id: '/admin/users'
-      path: '/admin/users'
+    '/admin/_protectedRoute': {
+      id: '/admin/_protectedRoute'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminProtectedRouteRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/_protectedRoute/users': {
+      id: '/admin/_protectedRoute/users'
+      path: '/users'
       fullPath: '/admin/users'
-      preLoaderRoute: typeof AdminUsersRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AdminProtectedRouteUsersRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
+    }
+    '/admin/_protectedRoute/games': {
+      id: '/admin/_protectedRoute/games'
+      path: '/games'
+      fullPath: '/admin/games'
+      preLoaderRoute: typeof AdminProtectedRouteGamesRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
     }
   }
 }
+
+interface AdminProtectedRouteRouteChildren {
+  AdminProtectedRouteGamesRoute: typeof AdminProtectedRouteGamesRoute
+  AdminProtectedRouteUsersRoute: typeof AdminProtectedRouteUsersRoute
+}
+
+const AdminProtectedRouteRouteChildren: AdminProtectedRouteRouteChildren = {
+  AdminProtectedRouteGamesRoute: AdminProtectedRouteGamesRoute,
+  AdminProtectedRouteUsersRoute: AdminProtectedRouteUsersRoute,
+}
+
+const AdminProtectedRouteRouteWithChildren =
+  AdminProtectedRouteRoute._addFileChildren(AdminProtectedRouteRouteChildren)
+
+interface AdminRouteChildren {
+  AdminProtectedRouteRoute: typeof AdminProtectedRouteRouteWithChildren
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminProtectedRouteRoute: AdminProtectedRouteRouteWithChildren,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AuthRouteChildren {
   AuthLayoutRoute: typeof AuthLayoutRoute
@@ -181,7 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GamesRoute: GamesRoute,
   LoginRoute: LoginRoute,
-  AdminUsersRoute: AdminUsersRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
 }
 export const routeTree = rootRouteImport
