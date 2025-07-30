@@ -15,10 +15,12 @@ export const refreshToken = async (): Promise<{
       }
     )
 
-    console.log('Token refreshed:', token)
     return token
   } catch (error) {
-    console.error('Error refreshing token:', error)
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+    })
     return null
   }
 }
