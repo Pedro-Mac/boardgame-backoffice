@@ -1,6 +1,8 @@
+import { DataTable } from '@/components/DataTable'
 import { getGames } from '@/services/games/getGames'
-import type { GameListResponse } from '@/services/games/types'
+import type { Game, GameListResponse } from '@/services/games/types'
 import { createFileRoute } from '@tanstack/react-router'
+import type { ColumnDef } from '@tanstack/react-table'
 
 export const Route = createFileRoute('/admin/_protectedRoute/games')({
   component: RouteComponent,
@@ -14,19 +16,21 @@ export const Route = createFileRoute('/admin/_protectedRoute/games')({
 function RouteComponent() {
   const { games }: GameListResponse = Route.useLoaderData()
 
-  console.log('Games:', games)
+  const columns: ColumnDef<Game>[] = [
+    {
+      accessorKey: 'title',
+      header: 'Title',
+    },
+    {
+      accessorKey: 'description',
+      header: 'Description',
+    },
+  ]
 
   return (
     <div>
       <h2 className="mb-2">Games</h2>
-
-      <ul>
-        {games.map((game) => (
-          <li key={game.id}>
-            {game.title} - {game.description}
-          </li>
-        ))}
-      </ul>
+      <DataTable columns={columns} data={games} />
     </div>
   )
 }
