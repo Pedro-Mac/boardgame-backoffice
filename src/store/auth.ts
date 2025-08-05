@@ -10,7 +10,7 @@ interface AuthState {
 
   isLoading: boolean
   setLoading: (loading: boolean) => void
-  setUser: (user: { id: string; email: string; name: string }) => void
+  setUser: (user: { id: string; email: string; name: string } | null) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -19,7 +19,7 @@ export const useAuthStore = create<AuthState>()(
     isLoading: false,
 
     setLoading: (loading: boolean) => set({ isLoading: loading }),
-    setUser: (user: { id: string; email: string; name: string }) =>
+    setUser: (user: { id: string; email: string; name: string } | null) =>
       set({ user }),
   }))
 )

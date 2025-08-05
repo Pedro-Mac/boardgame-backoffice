@@ -9,6 +9,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { Button } from './ui/button'
+import { logoutUser } from '@/services/auth/logout'
+import { useNavigate, Link } from '@tanstack/react-router'
+import { useAuthStore } from '@/store/auth'
 
 const sidebarItems = [
   {
@@ -34,6 +38,20 @@ const sidebarItems = [
 ]
 
 export function AppSidebar() {
+  const navigate = useNavigate()
+  const { setUser } = useAuthStore((state) => state)
+
+  const handleLogout = async () => {
+    // Implement logout logic here, e.g., clear auth tokens, redirect to login page, etc.
+    console.log('Logout clicked')
+    try {
+      await logoutUser()
+      setUser(null) // Clear user state
+      navigate({ to: '/' })
+    } catch (error) {
+      console.error('Logout failed', error)
+    }
+  }
   return (
     <Sidebar>
       <SidebarHeader />
@@ -44,7 +62,7 @@ export function AppSidebar() {
               {sidebarItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>{item.title}</a>
+                    <Link to={item.url}>{item.title}</Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -53,7 +71,22 @@ export function AppSidebar() {
         </SidebarGroup>
         <SidebarGroup />
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleLogout()
+          }}
+        >
+          <Button
+            variant="destructive"
+            className="w-full cursor-pointer"
+            type="submit"
+          >
+            Logout
+          </Button>
+        </form>
+      </SidebarFooter>
     </Sidebar>
   )
 }
