@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 export const Route = createFileRoute('/auth/login')({
   component: RouteComponent,
-  beforeLoad: async () => {
+  loader: async () => {
     // This can be used to check if the user is already logged in
     const user = useAuthStore.getState().user
     if (user) {
