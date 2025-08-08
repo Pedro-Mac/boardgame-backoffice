@@ -17,6 +17,9 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthLayoutRouteImport } from './routes/auth/_layout'
 import { Route as AdminProtectedRouteRouteImport } from './routes/admin/_protectedRoute'
 import { Route as AdminProtectedRouteUsersRouteImport } from './routes/admin/_protectedRoute/users'
+import { Route as AdminProtectedRouteSettingsRouteImport } from './routes/admin/_protectedRoute/settings'
+import { Route as AdminProtectedRouteRolesRouteImport } from './routes/admin/_protectedRoute/roles'
+import { Route as AdminProtectedRoutePermissionsRouteImport } from './routes/admin/_protectedRoute/permissions'
 import { Route as AdminProtectedRouteGamesRouteImport } from './routes/admin/_protectedRoute/games'
 
 const AuthRouteImport = createFileRoute('/auth')()
@@ -61,6 +64,24 @@ const AdminProtectedRouteUsersRoute =
     path: '/users',
     getParentRoute: () => AdminProtectedRouteRoute,
   } as any)
+const AdminProtectedRouteSettingsRoute =
+  AdminProtectedRouteSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
+const AdminProtectedRouteRolesRoute =
+  AdminProtectedRouteRolesRouteImport.update({
+    id: '/roles',
+    path: '/roles',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
+const AdminProtectedRoutePermissionsRoute =
+  AdminProtectedRoutePermissionsRouteImport.update({
+    id: '/permissions',
+    path: '/permissions',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
 const AdminProtectedRouteGamesRoute =
   AdminProtectedRouteGamesRouteImport.update({
     id: '/games',
@@ -75,6 +96,9 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/admin/games': typeof AdminProtectedRouteGamesRoute
+  '/admin/permissions': typeof AdminProtectedRoutePermissionsRoute
+  '/admin/roles': typeof AdminProtectedRouteRolesRoute
+  '/admin/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/users': typeof AdminProtectedRouteUsersRoute
 }
 export interface FileRoutesByTo {
@@ -84,6 +108,9 @@ export interface FileRoutesByTo {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/admin/games': typeof AdminProtectedRouteGamesRoute
+  '/admin/permissions': typeof AdminProtectedRoutePermissionsRoute
+  '/admin/roles': typeof AdminProtectedRouteRolesRoute
+  '/admin/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/users': typeof AdminProtectedRouteUsersRoute
 }
 export interface FileRoutesById {
@@ -96,6 +123,9 @@ export interface FileRoutesById {
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
   '/admin/_protectedRoute/games': typeof AdminProtectedRouteGamesRoute
+  '/admin/_protectedRoute/permissions': typeof AdminProtectedRoutePermissionsRoute
+  '/admin/_protectedRoute/roles': typeof AdminProtectedRouteRolesRoute
+  '/admin/_protectedRoute/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/_protectedRoute/users': typeof AdminProtectedRouteUsersRoute
 }
 export interface FileRouteTypes {
@@ -107,6 +137,9 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/admin/games'
+    | '/admin/permissions'
+    | '/admin/roles'
+    | '/admin/settings'
     | '/admin/users'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +149,9 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/admin/games'
+    | '/admin/permissions'
+    | '/admin/roles'
+    | '/admin/settings'
     | '/admin/users'
   id:
     | '__root__'
@@ -127,6 +163,9 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/signup'
     | '/admin/_protectedRoute/games'
+    | '/admin/_protectedRoute/permissions'
+    | '/admin/_protectedRoute/roles'
+    | '/admin/_protectedRoute/settings'
     | '/admin/_protectedRoute/users'
   fileRoutesById: FileRoutesById
 }
@@ -194,6 +233,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProtectedRouteUsersRouteImport
       parentRoute: typeof AdminProtectedRouteRoute
     }
+    '/admin/_protectedRoute/settings': {
+      id: '/admin/_protectedRoute/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminProtectedRouteSettingsRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
+    }
+    '/admin/_protectedRoute/roles': {
+      id: '/admin/_protectedRoute/roles'
+      path: '/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof AdminProtectedRouteRolesRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
+    }
+    '/admin/_protectedRoute/permissions': {
+      id: '/admin/_protectedRoute/permissions'
+      path: '/permissions'
+      fullPath: '/admin/permissions'
+      preLoaderRoute: typeof AdminProtectedRoutePermissionsRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
+    }
     '/admin/_protectedRoute/games': {
       id: '/admin/_protectedRoute/games'
       path: '/games'
@@ -206,11 +266,17 @@ declare module '@tanstack/react-router' {
 
 interface AdminProtectedRouteRouteChildren {
   AdminProtectedRouteGamesRoute: typeof AdminProtectedRouteGamesRoute
+  AdminProtectedRoutePermissionsRoute: typeof AdminProtectedRoutePermissionsRoute
+  AdminProtectedRouteRolesRoute: typeof AdminProtectedRouteRolesRoute
+  AdminProtectedRouteSettingsRoute: typeof AdminProtectedRouteSettingsRoute
   AdminProtectedRouteUsersRoute: typeof AdminProtectedRouteUsersRoute
 }
 
 const AdminProtectedRouteRouteChildren: AdminProtectedRouteRouteChildren = {
   AdminProtectedRouteGamesRoute: AdminProtectedRouteGamesRoute,
+  AdminProtectedRoutePermissionsRoute: AdminProtectedRoutePermissionsRoute,
+  AdminProtectedRouteRolesRoute: AdminProtectedRouteRolesRoute,
+  AdminProtectedRouteSettingsRoute: AdminProtectedRouteSettingsRoute,
   AdminProtectedRouteUsersRoute: AdminProtectedRouteUsersRoute,
 }
 

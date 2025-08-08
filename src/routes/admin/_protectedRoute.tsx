@@ -23,13 +23,14 @@ export const Route = createFileRoute('/admin/_protectedRoute')({
       })
     }
   },
+  pendingComponent: () => <div>dasdhasidioasndoasndaios...</div>,
 })
 
 function ProtectedRoute() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full">
+      <main className="w-full p-8">
         <SidebarTrigger />
         <Outlet />
       </main>
