@@ -1,18 +1,16 @@
 import { AppSidebar } from '@/components/AppSidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { refreshToken } from '@/services/auth/refreshToken'
+import { useAuthStore } from '@/store/auth'
+
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/admin/_protectedRoute')({
   component: ProtectedRoute,
-  loader: async () => {
-    const token = await refreshToken()
-
-    if (!token) {
+  beforeLoad: async () => {
+    const user = useAuthStore.getState().user
+    if (!user) {
       throw redirect({ to: '/auth/login' })
     }
-
-    return null
   },
 })
 

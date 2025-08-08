@@ -1,37 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { loginUser } from '@/services/auth/login'
-import { refreshToken } from '@/services/auth/refreshToken'
 import { useAuthStore } from '@/store/auth'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
-export const Route = createFileRoute('/')({
-  component: Index,
+export const Route = createFileRoute('/auth/login')({
+  component: RouteComponent,
   beforeLoad: async () => {
+    // This can be used to check if the user is already logged in
     const user = useAuthStore.getState().user
-    const { setUser } = useAuthStore.getState()
-    if (!user) {
-      const data = await refreshToken()
-
-      if (!data) {
-        throw redirect({ to: '/auth/login' })
-      }
-      setUser({
-        id: 'id',
-        email: 'email',
-        name: 'name',
-      })
+    if (user) {
       throw redirect({ to: '/admin/games' })
-    } else {
-      if (user) {
-        throw redirect({ to: '/admin/games' })
-      }
     }
   },
 })
 
-function Index() {
+function RouteComponent() {
   const { isLoading, setLoading, setUser } = useAuthStore((state) => state)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
