@@ -13,15 +13,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import DataTableDropdown from './DataTableDropdown'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  actions: { link: string; title: string; param: string }[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  actions,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -36,6 +39,7 @@ export function DataTable<TData, TValue>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
+                console.log('header', header)
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
@@ -47,6 +51,9 @@ export function DataTable<TData, TValue>({
                   </TableHead>
                 )
               })}
+              {actions?.length > 0 ? (
+                <TableHead id="actions">Actions</TableHead>
+              ) : null}
             </TableRow>
           ))}
         </TableHeader>
@@ -62,6 +69,24 @@ export function DataTable<TData, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+                {/** ACTIONS COLUMN */}
+                {actions?.length > 0 ? (
+                  <TableCell>
+                    <DataTableDropdown
+                      items={actions.map((action) => ({
+                        link: action.link,
+                        title: action.title,
+                        param: {
+                          key: action.param,
+                          value: row
+                            .getVisibleCells()
+                            .filter((cell) => cell.column.id === 'id')[0]
+                            ?.getValue() as string,
+                        },
+                      }))}
+                    />
+                  </TableCell>
+                ) : null}
               </TableRow>
             ))
           ) : (

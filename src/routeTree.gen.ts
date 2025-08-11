@@ -20,7 +20,10 @@ import { Route as AdminProtectedRouteUsersRouteImport } from './routes/admin/_pr
 import { Route as AdminProtectedRouteSettingsRouteImport } from './routes/admin/_protectedRoute/settings'
 import { Route as AdminProtectedRouteRolesRouteImport } from './routes/admin/_protectedRoute/roles'
 import { Route as AdminProtectedRoutePermissionsRouteImport } from './routes/admin/_protectedRoute/permissions'
-import { Route as AdminProtectedRouteGamesRouteImport } from './routes/admin/_protectedRoute/games'
+import { Route as AdminProtectedRouteGamesIndexRouteImport } from './routes/admin/_protectedRoute/games/index'
+import { Route as AdminProtectedRouteGamesGameIdRouteImport } from './routes/admin/_protectedRoute/games/$gameId'
+import { Route as AdminProtectedRouteGamesGameIdEditRouteImport } from './routes/admin/_protectedRoute/games/$gameId.edit'
+import { Route as AdminProtectedRouteGamesGameIdDeleteRouteImport } from './routes/admin/_protectedRoute/games/$gameId.delete'
 
 const AuthRouteImport = createFileRoute('/auth')()
 const AdminRouteImport = createFileRoute('/admin')()
@@ -82,11 +85,29 @@ const AdminProtectedRoutePermissionsRoute =
     path: '/permissions',
     getParentRoute: () => AdminProtectedRouteRoute,
   } as any)
-const AdminProtectedRouteGamesRoute =
-  AdminProtectedRouteGamesRouteImport.update({
-    id: '/games',
-    path: '/games',
+const AdminProtectedRouteGamesIndexRoute =
+  AdminProtectedRouteGamesIndexRouteImport.update({
+    id: '/games/',
+    path: '/games/',
     getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
+const AdminProtectedRouteGamesGameIdRoute =
+  AdminProtectedRouteGamesGameIdRouteImport.update({
+    id: '/games/$gameId',
+    path: '/games/$gameId',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
+const AdminProtectedRouteGamesGameIdEditRoute =
+  AdminProtectedRouteGamesGameIdEditRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => AdminProtectedRouteGamesGameIdRoute,
+  } as any)
+const AdminProtectedRouteGamesGameIdDeleteRoute =
+  AdminProtectedRouteGamesGameIdDeleteRouteImport.update({
+    id: '/delete',
+    path: '/delete',
+    getParentRoute: () => AdminProtectedRouteGamesGameIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -95,11 +116,14 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthLayoutRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/admin/games': typeof AdminProtectedRouteGamesRoute
   '/admin/permissions': typeof AdminProtectedRoutePermissionsRoute
   '/admin/roles': typeof AdminProtectedRouteRolesRoute
   '/admin/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/users': typeof AdminProtectedRouteUsersRoute
+  '/admin/games/$gameId': typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  '/admin/games': typeof AdminProtectedRouteGamesIndexRoute
+  '/admin/games/$gameId/delete': typeof AdminProtectedRouteGamesGameIdDeleteRoute
+  '/admin/games/$gameId/edit': typeof AdminProtectedRouteGamesGameIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -107,11 +131,14 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthLayoutRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/admin/games': typeof AdminProtectedRouteGamesRoute
   '/admin/permissions': typeof AdminProtectedRoutePermissionsRoute
   '/admin/roles': typeof AdminProtectedRouteRolesRoute
   '/admin/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/users': typeof AdminProtectedRouteUsersRoute
+  '/admin/games/$gameId': typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  '/admin/games': typeof AdminProtectedRouteGamesIndexRoute
+  '/admin/games/$gameId/delete': typeof AdminProtectedRouteGamesGameIdDeleteRoute
+  '/admin/games/$gameId/edit': typeof AdminProtectedRouteGamesGameIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -122,11 +149,14 @@ export interface FileRoutesById {
   '/auth/_layout': typeof AuthLayoutRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/admin/_protectedRoute/games': typeof AdminProtectedRouteGamesRoute
   '/admin/_protectedRoute/permissions': typeof AdminProtectedRoutePermissionsRoute
   '/admin/_protectedRoute/roles': typeof AdminProtectedRouteRolesRoute
   '/admin/_protectedRoute/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/_protectedRoute/users': typeof AdminProtectedRouteUsersRoute
+  '/admin/_protectedRoute/games/$gameId': typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  '/admin/_protectedRoute/games/': typeof AdminProtectedRouteGamesIndexRoute
+  '/admin/_protectedRoute/games/$gameId/delete': typeof AdminProtectedRouteGamesGameIdDeleteRoute
+  '/admin/_protectedRoute/games/$gameId/edit': typeof AdminProtectedRouteGamesGameIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -136,11 +166,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/signup'
-    | '/admin/games'
     | '/admin/permissions'
     | '/admin/roles'
     | '/admin/settings'
     | '/admin/users'
+    | '/admin/games/$gameId'
+    | '/admin/games'
+    | '/admin/games/$gameId/delete'
+    | '/admin/games/$gameId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -148,11 +181,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/signup'
-    | '/admin/games'
     | '/admin/permissions'
     | '/admin/roles'
     | '/admin/settings'
     | '/admin/users'
+    | '/admin/games/$gameId'
+    | '/admin/games'
+    | '/admin/games/$gameId/delete'
+    | '/admin/games/$gameId/edit'
   id:
     | '__root__'
     | '/'
@@ -162,11 +198,14 @@ export interface FileRouteTypes {
     | '/auth/_layout'
     | '/auth/login'
     | '/auth/signup'
-    | '/admin/_protectedRoute/games'
     | '/admin/_protectedRoute/permissions'
     | '/admin/_protectedRoute/roles'
     | '/admin/_protectedRoute/settings'
     | '/admin/_protectedRoute/users'
+    | '/admin/_protectedRoute/games/$gameId'
+    | '/admin/_protectedRoute/games/'
+    | '/admin/_protectedRoute/games/$gameId/delete'
+    | '/admin/_protectedRoute/games/$gameId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -254,30 +293,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProtectedRoutePermissionsRouteImport
       parentRoute: typeof AdminProtectedRouteRoute
     }
-    '/admin/_protectedRoute/games': {
-      id: '/admin/_protectedRoute/games'
+    '/admin/_protectedRoute/games/': {
+      id: '/admin/_protectedRoute/games/'
       path: '/games'
       fullPath: '/admin/games'
-      preLoaderRoute: typeof AdminProtectedRouteGamesRouteImport
+      preLoaderRoute: typeof AdminProtectedRouteGamesIndexRouteImport
       parentRoute: typeof AdminProtectedRouteRoute
+    }
+    '/admin/_protectedRoute/games/$gameId': {
+      id: '/admin/_protectedRoute/games/$gameId'
+      path: '/games/$gameId'
+      fullPath: '/admin/games/$gameId'
+      preLoaderRoute: typeof AdminProtectedRouteGamesGameIdRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
+    }
+    '/admin/_protectedRoute/games/$gameId/edit': {
+      id: '/admin/_protectedRoute/games/$gameId/edit'
+      path: '/edit'
+      fullPath: '/admin/games/$gameId/edit'
+      preLoaderRoute: typeof AdminProtectedRouteGamesGameIdEditRouteImport
+      parentRoute: typeof AdminProtectedRouteGamesGameIdRoute
+    }
+    '/admin/_protectedRoute/games/$gameId/delete': {
+      id: '/admin/_protectedRoute/games/$gameId/delete'
+      path: '/delete'
+      fullPath: '/admin/games/$gameId/delete'
+      preLoaderRoute: typeof AdminProtectedRouteGamesGameIdDeleteRouteImport
+      parentRoute: typeof AdminProtectedRouteGamesGameIdRoute
     }
   }
 }
 
+interface AdminProtectedRouteGamesGameIdRouteChildren {
+  AdminProtectedRouteGamesGameIdDeleteRoute: typeof AdminProtectedRouteGamesGameIdDeleteRoute
+  AdminProtectedRouteGamesGameIdEditRoute: typeof AdminProtectedRouteGamesGameIdEditRoute
+}
+
+const AdminProtectedRouteGamesGameIdRouteChildren: AdminProtectedRouteGamesGameIdRouteChildren =
+  {
+    AdminProtectedRouteGamesGameIdDeleteRoute:
+      AdminProtectedRouteGamesGameIdDeleteRoute,
+    AdminProtectedRouteGamesGameIdEditRoute:
+      AdminProtectedRouteGamesGameIdEditRoute,
+  }
+
+const AdminProtectedRouteGamesGameIdRouteWithChildren =
+  AdminProtectedRouteGamesGameIdRoute._addFileChildren(
+    AdminProtectedRouteGamesGameIdRouteChildren,
+  )
+
 interface AdminProtectedRouteRouteChildren {
-  AdminProtectedRouteGamesRoute: typeof AdminProtectedRouteGamesRoute
   AdminProtectedRoutePermissionsRoute: typeof AdminProtectedRoutePermissionsRoute
   AdminProtectedRouteRolesRoute: typeof AdminProtectedRouteRolesRoute
   AdminProtectedRouteSettingsRoute: typeof AdminProtectedRouteSettingsRoute
   AdminProtectedRouteUsersRoute: typeof AdminProtectedRouteUsersRoute
+  AdminProtectedRouteGamesGameIdRoute: typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  AdminProtectedRouteGamesIndexRoute: typeof AdminProtectedRouteGamesIndexRoute
 }
 
 const AdminProtectedRouteRouteChildren: AdminProtectedRouteRouteChildren = {
-  AdminProtectedRouteGamesRoute: AdminProtectedRouteGamesRoute,
   AdminProtectedRoutePermissionsRoute: AdminProtectedRoutePermissionsRoute,
   AdminProtectedRouteRolesRoute: AdminProtectedRouteRolesRoute,
   AdminProtectedRouteSettingsRoute: AdminProtectedRouteSettingsRoute,
   AdminProtectedRouteUsersRoute: AdminProtectedRouteUsersRoute,
+  AdminProtectedRouteGamesGameIdRoute:
+    AdminProtectedRouteGamesGameIdRouteWithChildren,
+  AdminProtectedRouteGamesIndexRoute: AdminProtectedRouteGamesIndexRoute,
 }
 
 const AdminProtectedRouteRouteWithChildren =
