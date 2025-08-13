@@ -1,5 +1,4 @@
 import { DataTable } from '@/components/DataTable'
-import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/ui/page-header'
 import { getGames } from '@/services/games/getGames'
 import type { Game, GameListResponse } from '@/services/games/types'
