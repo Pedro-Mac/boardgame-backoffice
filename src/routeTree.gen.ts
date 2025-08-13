@@ -21,6 +21,7 @@ import { Route as AdminProtectedRouteSettingsRouteImport } from './routes/admin/
 import { Route as AdminProtectedRouteRolesRouteImport } from './routes/admin/_protectedRoute/roles'
 import { Route as AdminProtectedRoutePermissionsRouteImport } from './routes/admin/_protectedRoute/permissions'
 import { Route as AdminProtectedRouteGamesIndexRouteImport } from './routes/admin/_protectedRoute/games/index'
+import { Route as AdminProtectedRouteGamesAddRouteImport } from './routes/admin/_protectedRoute/games/add'
 import { Route as AdminProtectedRouteGamesGameIdRouteImport } from './routes/admin/_protectedRoute/games/$gameId'
 import { Route as AdminProtectedRouteGamesGameIdEditRouteImport } from './routes/admin/_protectedRoute/games/$gameId.edit'
 import { Route as AdminProtectedRouteGamesGameIdDeleteRouteImport } from './routes/admin/_protectedRoute/games/$gameId.delete'
@@ -91,6 +92,12 @@ const AdminProtectedRouteGamesIndexRoute =
     path: '/games/',
     getParentRoute: () => AdminProtectedRouteRoute,
   } as any)
+const AdminProtectedRouteGamesAddRoute =
+  AdminProtectedRouteGamesAddRouteImport.update({
+    id: '/games/add',
+    path: '/games/add',
+    getParentRoute: () => AdminProtectedRouteRoute,
+  } as any)
 const AdminProtectedRouteGamesGameIdRoute =
   AdminProtectedRouteGamesGameIdRouteImport.update({
     id: '/games/$gameId',
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/users': typeof AdminProtectedRouteUsersRoute
   '/admin/games/$gameId': typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  '/admin/games/add': typeof AdminProtectedRouteGamesAddRoute
   '/admin/games': typeof AdminProtectedRouteGamesIndexRoute
   '/admin/games/$gameId/delete': typeof AdminProtectedRouteGamesGameIdDeleteRoute
   '/admin/games/$gameId/edit': typeof AdminProtectedRouteGamesGameIdEditRoute
@@ -136,6 +144,7 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/users': typeof AdminProtectedRouteUsersRoute
   '/admin/games/$gameId': typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  '/admin/games/add': typeof AdminProtectedRouteGamesAddRoute
   '/admin/games': typeof AdminProtectedRouteGamesIndexRoute
   '/admin/games/$gameId/delete': typeof AdminProtectedRouteGamesGameIdDeleteRoute
   '/admin/games/$gameId/edit': typeof AdminProtectedRouteGamesGameIdEditRoute
@@ -154,6 +163,7 @@ export interface FileRoutesById {
   '/admin/_protectedRoute/settings': typeof AdminProtectedRouteSettingsRoute
   '/admin/_protectedRoute/users': typeof AdminProtectedRouteUsersRoute
   '/admin/_protectedRoute/games/$gameId': typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  '/admin/_protectedRoute/games/add': typeof AdminProtectedRouteGamesAddRoute
   '/admin/_protectedRoute/games/': typeof AdminProtectedRouteGamesIndexRoute
   '/admin/_protectedRoute/games/$gameId/delete': typeof AdminProtectedRouteGamesGameIdDeleteRoute
   '/admin/_protectedRoute/games/$gameId/edit': typeof AdminProtectedRouteGamesGameIdEditRoute
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/users'
     | '/admin/games/$gameId'
+    | '/admin/games/add'
     | '/admin/games'
     | '/admin/games/$gameId/delete'
     | '/admin/games/$gameId/edit'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/users'
     | '/admin/games/$gameId'
+    | '/admin/games/add'
     | '/admin/games'
     | '/admin/games/$gameId/delete'
     | '/admin/games/$gameId/edit'
@@ -203,6 +215,7 @@ export interface FileRouteTypes {
     | '/admin/_protectedRoute/settings'
     | '/admin/_protectedRoute/users'
     | '/admin/_protectedRoute/games/$gameId'
+    | '/admin/_protectedRoute/games/add'
     | '/admin/_protectedRoute/games/'
     | '/admin/_protectedRoute/games/$gameId/delete'
     | '/admin/_protectedRoute/games/$gameId/edit'
@@ -300,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProtectedRouteGamesIndexRouteImport
       parentRoute: typeof AdminProtectedRouteRoute
     }
+    '/admin/_protectedRoute/games/add': {
+      id: '/admin/_protectedRoute/games/add'
+      path: '/games/add'
+      fullPath: '/admin/games/add'
+      preLoaderRoute: typeof AdminProtectedRouteGamesAddRouteImport
+      parentRoute: typeof AdminProtectedRouteRoute
+    }
     '/admin/_protectedRoute/games/$gameId': {
       id: '/admin/_protectedRoute/games/$gameId'
       path: '/games/$gameId'
@@ -348,6 +368,7 @@ interface AdminProtectedRouteRouteChildren {
   AdminProtectedRouteSettingsRoute: typeof AdminProtectedRouteSettingsRoute
   AdminProtectedRouteUsersRoute: typeof AdminProtectedRouteUsersRoute
   AdminProtectedRouteGamesGameIdRoute: typeof AdminProtectedRouteGamesGameIdRouteWithChildren
+  AdminProtectedRouteGamesAddRoute: typeof AdminProtectedRouteGamesAddRoute
   AdminProtectedRouteGamesIndexRoute: typeof AdminProtectedRouteGamesIndexRoute
 }
 
@@ -358,6 +379,7 @@ const AdminProtectedRouteRouteChildren: AdminProtectedRouteRouteChildren = {
   AdminProtectedRouteUsersRoute: AdminProtectedRouteUsersRoute,
   AdminProtectedRouteGamesGameIdRoute:
     AdminProtectedRouteGamesGameIdRouteWithChildren,
+  AdminProtectedRouteGamesAddRoute: AdminProtectedRouteGamesAddRoute,
   AdminProtectedRouteGamesIndexRoute: AdminProtectedRouteGamesIndexRoute,
 }
 

@@ -1,8 +1,9 @@
 import { DataTable } from '@/components/DataTable'
+import { Button } from '@/components/ui/button'
 import { PageHeader } from '@/components/ui/page-header'
 import { getGames } from '@/services/games/getGames'
 import type { Game, GameListResponse } from '@/services/games/types'
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
 
 export const Route = createFileRoute('/admin/_protectedRoute/games/')({
@@ -38,17 +39,6 @@ function RouteComponent() {
     },
     { accessorKey: 'max_players', header: 'Max Players' },
     { accessorKey: 'price', header: 'Price' },
-    // {
-    //   id: 'actions',
-    //   cell: () => (
-    //     <DataTableDropdown
-    //       items={[
-    //         { link: './edit/$gameId', title: 'Edit' },
-    //         { link: './delete/$gameId', title: 'Delete', params: {} },
-    //       ]}
-    //     />
-    //   ),
-    // },
   ]
 
   const tableActions = [
@@ -66,7 +56,15 @@ function RouteComponent() {
 
   return (
     <div>
-      <PageHeader title="Games" />
+      <div className="flex justify-between items-center mb-4">
+        <PageHeader title="Games" />
+        <Link
+          to="./add"
+          className="cursor-pointer text-white bg-emerald-900 rounded px-3 py-2 hover:bg-emerald-700 h-8 flex items-center justify-center"
+        >
+          Add game
+        </Link>
+      </div>
       <DataTable columns={columns} data={games} actions={tableActions} />
       <Outlet />
     </div>

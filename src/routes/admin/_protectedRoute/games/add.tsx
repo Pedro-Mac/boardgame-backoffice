@@ -8,9 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 
-export const Route = createFileRoute(
-  '/admin/_protectedRoute/games/$gameId/delete'
-)({
+export const Route = createFileRoute('/admin/_protectedRoute/games/add')({
   component: RouteComponent,
 })
 
@@ -19,8 +17,8 @@ function RouteComponent() {
     <Dialog open>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete</DialogTitle>
-          <DialogDescription>aaa</DialogDescription>
+          <DialogTitle>Add game</DialogTitle>
+          <DialogDescription>Add game</DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>
