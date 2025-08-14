@@ -2,8 +2,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { z } from 'zod'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../ui/form'
 import { Input } from '../ui/input'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+import { Button } from '../ui/button'
 
 const formSchema = z.object({
   title: z.string().min(1, 'Name is required'),
@@ -12,7 +21,7 @@ const formSchema = z.object({
   max_players: z.number().min(1, 'At least one player is required'),
   duration: z.number().min(1, 'Duration must be at least 1 minute'),
   price: z.number().min(0, 'Price cannot be negative'),
-  is_available: z.boolean(),
+  is_available: z.literal('available').or(z.literal('not_available')),
 })
 const AddGameForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -24,7 +33,7 @@ const AddGameForm = () => {
       max_players: 1,
       duration: 30,
       price: 0,
-      is_available: false,
+      is_available: 'not_available',
     },
   })
 
@@ -39,8 +48,9 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="title"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Game Title</FormLabel>
                 <FormControl>
                   <Input placeholder="Game title" {...field} />
                 </FormControl>
@@ -51,8 +61,9 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="description"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
                   <Input placeholder="Description" {...field} />
                 </FormControl>
@@ -63,10 +74,16 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="min_players"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Minimum Players</FormLabel>
                 <FormControl>
-                  <Input placeholder="Min players" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Min players"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -75,10 +92,16 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="max_players"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Maximum Players</FormLabel>
                 <FormControl>
-                  <Input placeholder="Max players" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Max players"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,10 +110,16 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="duration"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Duration (minutes)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Duration" {...field} />
+                  <Input
+                    type="number"
+                    placeholder="Duration"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,10 +128,17 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="price"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Price (in cents)</FormLabel>
                 <FormControl>
-                  <Input placeholder="Price" {...field} />
+                  <Input
+                    type="number"
+                    step="1"
+                    placeholder="Price"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -111,15 +147,47 @@ const AddGameForm = () => {
           <FormField
             control={form.control}
             name="is_available"
-            render={(field) => (
+            render={({ field }) => (
               <FormItem>
+                <FormLabel>Availability</FormLabel>
                 <FormControl>
-                  <Input placeholder="Is available" {...field} />
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex "
+                  >
+                    <FormItem className="flex items-center gap-3">
+                      <FormControl>
+                        <RadioGroupItem value="available" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Available</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center gap-3">
+                      <FormControl>
+                        <RadioGroupItem value="not_available" />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        Not available
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          <div className="flex justify-end gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              className="cursor-pointer border-red-500 text-red-500 hover:text-red-400 hover:border-red-400 hover:bg-white"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" className="cursor-pointer">
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
