@@ -2,7 +2,7 @@ export const fetchData = async <T>(
   url: string,
   options?: RequestInit
 ): Promise<T> => {
-  let baseUrl: string = 'https://www.api.tabletopburrow.com'
+  let baseUrl: string = 'https://api.tabletopburrow.com'
   if (url.includes('https')) {
     baseUrl = url
   } else {
