@@ -39,7 +39,6 @@ export function DataTable<TData, TValue>({
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
-                console.log('header', header)
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder

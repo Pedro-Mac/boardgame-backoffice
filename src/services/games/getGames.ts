@@ -5,7 +5,7 @@ export const getGames = async (
   limit?: number,
   offset?: number
 ): Promise<GameListResponse> => {
-  const res: { games: Game[] } = await fetchData(
+  const res: { games: Game[]; total: number } = await fetchData(
     `/games/?limit=${limit && limit > 0 ? limit : 10}&offset=${offset && offset > 0 ? offset : 0}`,
     { method: 'GET' }
   )

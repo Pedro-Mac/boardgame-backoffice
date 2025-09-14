@@ -15,4 +15,5 @@ export interface Game {
 
 export interface GameListResponse {
   games: Game[]
+  total: number
 }
