@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
+import { Link } from '@tanstack/react-router'
 
 interface PaginationProps {
   limit: number
@@ -14,21 +15,37 @@ interface PaginationProps {
 }
 
 const Pagination = ({ limit, offset }: PaginationProps) => {
+  const currentPage = Math.floor(offset / limit) + 1
+  const prevOffset = Math.max(0, offset - limit)
+  const nextOffset = offset + limit
+
   return (
     <div>
       <ShadPagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href="#" />
+            <Link
+              from="/admin/games"
+              to="/admin/games"
+              search={{ limit, offset: prevOffset }}
+            >
+              <PaginationPrevious />
+            </Link>
           </PaginationItem>
           <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
+            <PaginationLink href="#">{currentPage}</PaginationLink>
           </PaginationItem>
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext href="#" />
+            <Link
+              from="/admin/games"
+              to="/admin/games"
+              search={{ limit, offset: nextOffset }}
+            >
+              <PaginationNext />
+            </Link>
           </PaginationItem>
         </PaginationContent>
       </ShadPagination>
