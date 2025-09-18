@@ -111,7 +111,7 @@ function RouteComponent() {
       </div>
       <DataTable columns={columns} data={games} actions={tableActions} />
 
-      <Pagination limit={limit} offset={offset} />
+      <Pagination limit={limit} offset={offset} total={total} />
       <Select
         value={typeof limit === 'number' ? limit.toString() : '10'}
         onValueChange={handlePageSizeValueChange}

@@ -3,7 +3,6 @@ import {
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
@@ -12,12 +11,14 @@ import { Link } from '@tanstack/react-router'
 interface PaginationProps {
   limit: number
   offset: number
+  total: number
 }
 
-const Pagination = ({ limit, offset }: PaginationProps) => {
-  const currentPage = Math.floor(offset / limit) + 1
+const Pagination = ({ limit, offset, total }: PaginationProps) => {
   const prevOffset = Math.max(0, offset - limit)
   const nextOffset = offset + limit
+  const totalPages = Math.ceil(total / limit)
+  const totalPagesList = Array.from({ length: totalPages }, (_, i) => i + 1)
 
   return (
     <div>
@@ -32,12 +33,20 @@ const Pagination = ({ limit, offset }: PaginationProps) => {
               <PaginationPrevious />
             </Link>
           </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">{currentPage}</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
+          {totalPagesList.map((page) => {
+            return (
+              <PaginationItem key={page}>
+                <Link
+                  from="."
+                  to={'.'}
+                  search={{ limit, offset: (page - 1) * limit }}
+                >
+                  {page}
+                </Link>
+              </PaginationItem>
+            )
+          })}
+
           <PaginationItem>
             <Link
               from="/admin/games"
