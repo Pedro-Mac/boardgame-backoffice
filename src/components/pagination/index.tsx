@@ -1,10 +1,7 @@
 import {
   Pagination as ShadPagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
 } from '@/components/ui/pagination'
 import { Link } from '@tanstack/react-router'
 
@@ -22,15 +19,15 @@ const Pagination = ({ limit, offset, total }: PaginationProps) => {
 
   return (
     <div>
-      <ShadPagination>
-        <PaginationContent>
+      <ShadPagination className="mt-3">
+        <PaginationContent className="gap-4">
           <PaginationItem>
             <Link
               from="/admin/games"
               to="/admin/games"
               search={{ limit, offset: prevOffset }}
             >
-              <PaginationPrevious />
+              Previous
             </Link>
           </PaginationItem>
           {totalPagesList.map((page) => {
@@ -38,7 +35,7 @@ const Pagination = ({ limit, offset, total }: PaginationProps) => {
               <PaginationItem key={page}>
                 <Link
                   from="."
-                  to={'.'}
+                  to="."
                   search={{ limit, offset: (page - 1) * limit }}
                 >
                   {page}
@@ -53,7 +50,7 @@ const Pagination = ({ limit, offset, total }: PaginationProps) => {
               to="/admin/games"
               search={{ limit, offset: nextOffset }}
             >
-              <PaginationNext />
+              Next
             </Link>
           </PaginationItem>
         </PaginationContent>
