@@ -13,6 +13,7 @@ import {
 import { Input } from '../ui/input'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Button } from '../ui/button'
+import { Link } from '@tanstack/react-router'
 
 const formSchema = z.object({
   title: z.string().min(1, 'Name is required'),
@@ -177,13 +178,13 @@ const AddGameForm = () => {
             )}
           />
           <div className="flex justify-end gap-4">
-            <Button
+            <Link
               type="button"
-              variant="outline"
+              to=".."
               className="cursor-pointer border-red-500 text-red-500 hover:text-red-400 hover:border-red-400 hover:bg-white"
             >
               Cancel
-            </Button>
+            </Link>
             <Button type="submit" className="cursor-pointer">
               Submit
             </Button>

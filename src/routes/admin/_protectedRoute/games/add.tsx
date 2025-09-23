@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import {
   Dialog,
@@ -13,8 +13,19 @@ export const Route = createFileRoute('/admin/_protectedRoute/games/add')({
 })
 
 function RouteComponent() {
+  const navigate = useNavigate()
   return (
-    <Dialog open>
+    <Dialog
+      defaultOpen
+      onOpenChange={(open: boolean) => {
+        if (!open) {
+          navigate({
+            to: '/admin/games/',
+            search: { limit: 10, offset: 0 },
+          })
+        }
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add game</DialogTitle>
