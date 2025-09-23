@@ -13,7 +13,9 @@ import {
 import { Input } from '../ui/input'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Button } from '../ui/button'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { addGame } from '@/services/games/addGame'
+import { useAuthStore } from '@/store/auth'
 
 const formSchema = z.object({
   title: z.string().min(1, 'Name is required'),
@@ -24,7 +26,11 @@ const formSchema = z.object({
   price: z.number().min(0, 'Price cannot be negative'),
   is_available: z.literal('available').or(z.literal('not_available')),
 })
+
 const AddGameForm = () => {
+  const authStore = useAuthStore()
+  const navigate = useNavigate()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,9 +44,20 @@ const AddGameForm = () => {
     },
   })
 
-  function handleSubmit(data: z.infer<typeof formSchema>) {
+  async function handleSubmit(data: z.infer<typeof formSchema>) {
     console.log('Form submitted with data:', data)
-    // Handle form submission logic here
+    await addGame({
+      title: data.title,
+      description: data.description || '',
+      min_players: data.min_players,
+      max_players: data.max_players,
+      duration: `${data.duration} minutes`,
+      price: data.price,
+      is_available: data.is_available === 'available',
+      created_by: authStore.user?.id ? Number(authStore.user.id) : 0, // TODO: Replace with actual user ID
+    })
+
+    navigate({ to: '/admin/games', search: { limit: 10, offset: 0 } })
   }
   return (
     <div>

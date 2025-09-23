@@ -13,6 +13,17 @@ export interface Game {
   updated_by: string | null
 }
 
+export interface AddGameRequest {
+  title: string
+  description: string
+  min_players: number
+  max_players: number
+  price: number
+  duration: string
+  is_available: boolean
+  created_by: number
+}
+
 export interface GameListResponse {
   games: Game[]
   total: number
