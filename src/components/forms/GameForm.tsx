@@ -27,20 +27,36 @@ const formSchema = z.object({
   is_available: z.literal('available').or(z.literal('not_available')),
 })
 
-const AddGameForm = () => {
+const GameForm = ({
+  title,
+  description,
+  min_players,
+  max_players,
+  duration,
+  price,
+  is_available,
+}: {
+  title?: string
+  description?: string
+  min_players?: number
+  max_players?: number
+  duration?: number
+  price?: number
+  is_available?: 'available' | 'not_available'
+}) => {
   const authStore = useAuthStore()
   const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      min_players: 1,
-      max_players: 1,
-      duration: 30,
-      price: 0,
-      is_available: 'not_available',
+      title: title || '',
+      description: description || '',
+      min_players: min_players || 1,
+      max_players: max_players || 1,
+      duration: duration || 30,
+      price: price || 0,
+      is_available: is_available || 'not_available',
     },
   })
 
@@ -212,4 +228,4 @@ const AddGameForm = () => {
   )
 }
 
-export default AddGameForm
+export default GameForm

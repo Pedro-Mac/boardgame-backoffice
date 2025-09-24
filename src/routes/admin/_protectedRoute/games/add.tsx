@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import AddGameForm from '@/components/forms/AddGameForm'
+import GameForm from '@/components/forms/GameForm'
 
 export const Route = createFileRoute('/admin/_protectedRoute/games/add')({
   component: RouteComponent,
@@ -30,7 +30,7 @@ function RouteComponent() {
         <DialogHeader>
           <DialogTitle>Add game</DialogTitle>
         </DialogHeader>
-        <AddGameForm />
+        <GameForm />
       </DialogContent>
     </Dialog>
   )
