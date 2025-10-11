@@ -6,7 +6,7 @@ export const fetchData = async <T>(
   if (url.includes('https')) {
     baseUrl = url
   } else {
-    baseUrl += url.startsWith('/') ? url : `/${url}`
+    baseUrl += `/api/v1${url.startsWith('/') ? url : `/${url}`}`
   }
 
   try {
