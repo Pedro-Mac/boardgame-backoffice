@@ -9,19 +9,16 @@ import { useState } from 'react'
 export const Route = createFileRoute('/')({
   component: Index,
   beforeLoad: async () => {
-    const user = useAuthStore.getState().user
-    const { setUser } = useAuthStore.getState()
+    const user = useAuthStore.getState().authToken
+    const { setAuthToken } = useAuthStore.getState()
     if (!user) {
-      const data = await refreshToken()
+      const token = await refreshToken()
+      console.log('refreshed token', token)
 
-      if (!data) {
+      if (!token) {
         throw redirect({ to: '/auth/login' })
       }
-      setUser({
-        id: 'id',
-        email: 'email',
-        name: 'name',
-      })
+      setAuthToken(token)
       throw redirect({ to: '/admin/games' })
     } else {
       if (user) {
@@ -32,7 +29,7 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  const { isLoading, setLoading, setUser } = useAuthStore((state) => state)
+  const { isLoading, setLoading, setAuthToken } = useAuthStore((state) => state)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -41,13 +38,9 @@ function Index() {
     event.preventDefault()
     setLoading(true)
 
-    const user = await loginUser(email, password)
+    const token = await loginUser(email, password)
 
-    setUser({
-      id: user.id,
-      email: email,
-      name: user.name,
-    })
+    setAuthToken(token)
     setLoading(false)
     navigate({ to: '/admin/games' })
   }

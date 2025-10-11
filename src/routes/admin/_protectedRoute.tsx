@@ -8,19 +8,15 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 export const Route = createFileRoute('/admin/_protectedRoute')({
   component: ProtectedRoute,
   beforeLoad: async () => {
-    const { setUser, user } = useAuthStore.getState()
+    const { setAuthToken, authToken } = useAuthStore.getState()
 
-    if (!user) {
-      const data = await refreshToken()
+    if (!authToken) {
+      const token = await refreshToken()
 
-      if (!data) {
+      if (!token) {
         throw redirect({ to: '/auth/login' })
       }
-      setUser({
-        id: 'id',
-        email: 'email',
-        name: 'name',
-      })
+      setAuthToken(token)
     }
   },
   pendingComponent: () => <div>dasdhasidioasndoasndaios...</div>,

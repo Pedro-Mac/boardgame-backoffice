@@ -1,10 +1,9 @@
-import type { User } from '@/types/user';
-import { fetchData } from '@/utils/fetchData';
+import { fetchData } from '@/utils/fetchData'
 
 export const loginUser = async (
   email: string,
   password: string
-): Promise<User> => {
+): Promise<string> => {
   return fetchData('/auth/backoffice/login', {
     method: 'POST',
     headers: {
@@ -12,5 +11,5 @@ export const loginUser = async (
     },
     body: JSON.stringify({ email, password }),
     credentials: 'include',
-  });
-};
+  })
+}

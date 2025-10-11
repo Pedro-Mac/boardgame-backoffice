@@ -1,19 +1,14 @@
 import { fetchData } from '@/utils/fetchData'
 
-export const refreshToken = async (): Promise<{
-  access_token: string
-} | null> => {
+export const refreshToken = async (): Promise<string | null> => {
   try {
-    const token: { access_token: string } = await fetchData(
-      '/auth/refresh-token',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      }
-    )
+    const token: string = await fetchData('/auth/refresh-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
 
     return token
   } catch (error) {
