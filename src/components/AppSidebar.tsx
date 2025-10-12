@@ -39,14 +39,14 @@ const sidebarItems = [
 
 export function AppSidebar() {
   const navigate = useNavigate()
-  const { setAuthToken } = useAuthStore((state) => state)
+  const { setAuth } = useAuthStore((state) => state)
 
   const handleLogout = async () => {
     // Implement logout logic here, e.g., clear auth tokens, redirect to login page, etc.
     console.log('Logout clicked')
     try {
       await logoutUser()
-      setAuthToken(null) // Clear user state
+      setAuth(null) // Clear user state
       navigate({ to: '/' })
     } catch (error) {
       console.error('Logout failed', error)

@@ -1,8 +1,9 @@
+import type { Auth } from '@/store/auth'
 import { fetchData } from '@/utils/fetchData'
 
-export const refreshToken = async (): Promise<string | null> => {
+export const refreshToken = async (): Promise<Auth | null> => {
   try {
-    const token: string = await fetchData('/auth/refresh-token', {
+    const token: Auth = await fetchData('/auth/refresh-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

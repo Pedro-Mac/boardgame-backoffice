@@ -1,9 +1,10 @@
+import type { Auth } from '@/store/auth'
 import { fetchData } from '@/utils/fetchData'
 
 export const loginUser = async (
   email: string,
   password: string
-): Promise<string> => {
+): Promise<Auth> => {
   return fetchData('/auth/backoffice/login', {
     method: 'POST',
     headers: {

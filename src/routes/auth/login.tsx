@@ -9,7 +9,7 @@ export const Route = createFileRoute('/auth/login')({
   component: RouteComponent,
   loader: async () => {
     // This can be used to check if the user is already logged in
-    const token = useAuthStore.getState().authToken
+    const token = useAuthStore.getState().auth
     if (token) {
       throw redirect({ to: '/admin/games' })
     }
@@ -17,7 +17,7 @@ export const Route = createFileRoute('/auth/login')({
 })
 
 function RouteComponent() {
-  const { isLoading, setLoading, setAuthToken } = useAuthStore((state) => state)
+  const { isLoading, setLoading, setAuth } = useAuthStore((state) => state)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -28,7 +28,7 @@ function RouteComponent() {
 
     const token = await loginUser(email, password)
 
-    setAuthToken(token)
+    setAuth(token)
     setLoading(false)
     navigate({ to: '/admin/games' })
   }

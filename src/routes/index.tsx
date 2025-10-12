@@ -9,8 +9,8 @@ import { useState } from 'react'
 export const Route = createFileRoute('/')({
   component: Index,
   beforeLoad: async () => {
-    const user = useAuthStore.getState().authToken
-    const { setAuthToken } = useAuthStore.getState()
+    const user = useAuthStore.getState().auth
+    const { setAuth } = useAuthStore.getState()
     if (!user) {
       const token = await refreshToken()
       console.log('refreshed token', token)
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/')({
       if (!token) {
         throw redirect({ to: '/auth/login' })
       }
-      setAuthToken(token)
+      setAuth(token)
       throw redirect({ to: '/admin/games' })
     } else {
       if (user) {
@@ -29,7 +29,7 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  const { isLoading, setLoading, setAuthToken } = useAuthStore((state) => state)
+  const { isLoading, setLoading, setAuth } = useAuthStore((state) => state)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -40,7 +40,7 @@ function Index() {
 
     const token = await loginUser(email, password)
 
-    setAuthToken(token)
+    setAuth(token)
     setLoading(false)
     navigate({ to: '/admin/games' })
   }
