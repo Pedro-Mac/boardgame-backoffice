@@ -15,7 +15,7 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Button } from '../ui/button'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { addGame } from '@/services/games/addGame'
-import { useAuthStore } from '@/store/auth'
+import { useUserStore } from '@/store/user'
 
 const formSchema = z.object({
   title: z.string().min(1, 'Name is required'),
@@ -44,7 +44,7 @@ const GameForm = ({
   price?: number
   is_available?: 'available' | 'not_available'
 }) => {
-  const authStore = useAuthStore()
+  const userStore = useUserStore()
   const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,7 +70,7 @@ const GameForm = ({
       duration: `${data.duration} minutes`,
       price: data.price,
       is_available: data.is_available === 'available',
-      created_by: authStore.user?.id ? Number(authStore.user.id) : 0, // TODO: Replace with actual user ID
+      created_by: userStore.authUser?.id ? Number(userStore.authUser.id) : 0,
     })
 
     navigate({ to: '/admin/games', search: { limit: 10, offset: 0 } })

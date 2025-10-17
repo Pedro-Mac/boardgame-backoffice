@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { getAuthUser } from '@/services/auth/getAuthUser'
 import { loginUser } from '@/services/auth/login'
 import { useAuthStore } from '@/store/auth'
+import { useUserStore } from '@/store/user'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 
@@ -17,19 +19,29 @@ export const Route = createFileRoute('/auth/login')({
 })
 
 function RouteComponent() {
-  const { isLoading, setLoading, setAuth } = useAuthStore((state) => state)
+  const { isAuthLoading, setAuthLoading, setAuth } = useAuthStore(
+    (state) => state
+  )
+  const { setUser } = useUserStore((state) => state)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setLoading(true)
+    setAuthLoading(true)
 
     const token = await loginUser(email, password)
+    const user = await getAuthUser(token.access_token)
+    if (!user) {
+      setAuthLoading(false)
+      // Handle error (e.g., show a message to the user)
+      return
+    }
 
     setAuth(token)
-    setLoading(false)
+    setUser(user)
+    setAuthLoading(false)
     navigate({ to: '/admin/games' })
   }
 
@@ -65,7 +77,7 @@ function RouteComponent() {
           value={password}
           onChange={handleInputChange}
         />
-        <Button variant="secondary" disabled={isLoading}>
+        <Button variant="secondary" disabled={isAuthLoading}>
           Submit
         </Button>
       </form>

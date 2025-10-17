@@ -13,6 +13,7 @@ import { Button } from './ui/button'
 import { logoutUser } from '@/services/auth/logout'
 import { useNavigate, Link } from '@tanstack/react-router'
 import { useAuthStore } from '@/store/auth'
+import { useUserStore } from '@/store/user'
 
 const sidebarItems = [
   {
@@ -40,13 +41,15 @@ const sidebarItems = [
 export function AppSidebar() {
   const navigate = useNavigate()
   const { setAuth } = useAuthStore((state) => state)
+  const { setUser } = useUserStore((state) => state)
 
   const handleLogout = async () => {
     // Implement logout logic here, e.g., clear auth tokens, redirect to login page, etc.
     console.log('Logout clicked')
     try {
       await logoutUser()
-      setAuth(null) // Clear user state
+      setAuth(null) // Clear auth state
+      setUser(null)
       navigate({ to: '/' })
     } catch (error) {
       console.error('Logout failed', error)
