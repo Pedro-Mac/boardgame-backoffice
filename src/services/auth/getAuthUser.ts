@@ -10,9 +10,7 @@ export const getAuthUser = async (token: string) => {
   try {
     const response: AuthUser = await fetchData('/auth/me', {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      token,
     })
 
     return response as AuthUser | null

@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { deleteGame } from '@/services/games/deleteGame'
+import { useAuthStore } from '@/store/auth'
 import { useState } from 'react'
 
 export const Route = createFileRoute(
@@ -20,11 +21,17 @@ function RouteComponent() {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const params = Route.useParams()
   const navigate = useNavigate()
+  const { auth } = useAuthStore()
 
   const handleDeleteGame = async () => {
+    if (!auth?.access_token) {
+      console.error('No access token available')
+      return
+    }
+
     try {
       setIsDeleteLoading(true)
-      await deleteGame(params.id)
+      await deleteGame(params.gameId, auth.access_token)
       navigate({ to: '/admin/games' })
     } finally {
       setIsDeleteLoading(false)

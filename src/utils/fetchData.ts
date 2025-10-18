@@ -1,6 +1,6 @@
 export const fetchData = async <T>(
   url: string,
-  options?: RequestInit
+  options?: RequestInit & { token?: string }
 ): Promise<T> => {
   let baseUrl: string = 'https://api.tabletopburrow.com'
   if (url.includes('https')) {
@@ -9,13 +9,19 @@ export const fetchData = async <T>(
     baseUrl += `/api/v1${url.startsWith('/') ? url : `/${url}`}`
   }
 
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(options?.headers as Record<string, string>),
+  }
+
+  if (options?.token) {
+    headers.Authorization = `Bearer ${options.token}`
+  }
+
   try {
     const response = await fetch(baseUrl, {
       ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options?.headers,
-      },
+      headers,
       credentials: 'include',
     })
 
