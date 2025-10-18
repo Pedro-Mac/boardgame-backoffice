@@ -79,6 +79,7 @@ function RouteComponent() {
     },
     { accessorKey: 'max_players', header: 'Max Players' },
     { accessorKey: 'price', header: 'Price' },
+    { accessorKey: 'is_available', header: 'Available' },
   ]
 
   const tableActions = [
