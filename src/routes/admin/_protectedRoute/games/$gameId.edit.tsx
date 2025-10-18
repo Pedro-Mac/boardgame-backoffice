@@ -14,6 +14,13 @@ export const Route = createFileRoute(
 )({
   component: RouteComponent,
   loader,
+  pendingComponent: () => (
+    <Dialog defaultOpen>
+      <DialogContent>
+        <div>My first div while loading</div>
+      </DialogContent>
+    </Dialog>
+  ),
 })
 
 async function loader({

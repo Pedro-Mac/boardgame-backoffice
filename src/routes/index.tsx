@@ -29,19 +29,21 @@ export const Route = createFileRoute('/')({
 })
 
 function Index() {
-  const { isLoading, setLoading, setAuth } = useAuthStore((state) => state)
+  const { isAuthLoading, setAuthLoading, setAuth } = useAuthStore(
+    (state) => state
+  )
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setLoading(true)
+    setAuthLoading(true)
 
     const token = await loginUser(email, password)
 
     setAuth(token)
-    setLoading(false)
+    setAuthLoading(false)
     navigate({ to: '/admin/games' })
   }
 
@@ -77,7 +79,7 @@ function Index() {
           value={password}
           onChange={handleInputChange}
         />
-        <Button variant="secondary" disabled={isLoading}>
+        <Button variant="secondary" disabled={isAuthLoading}>
           Submit
         </Button>
       </form>

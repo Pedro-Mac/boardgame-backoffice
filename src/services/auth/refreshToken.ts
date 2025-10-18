@@ -11,9 +11,6 @@ export const refreshToken = async (): Promise<Auth | null> => {
       credentials: 'include',
     })) as Record<string, unknown>
 
-    console.log('Raw refresh token response:', response)
-
-    // Validate the response structure
     if (!response || typeof response !== 'object') {
       console.error('Invalid refresh token response: not an object')
       return null
@@ -35,7 +32,6 @@ export const refreshToken = async (): Promise<Auth | null> => {
       token_type: (response.token_type as string) || 'Bearer',
     }
 
-    console.log('Validated refresh token:', token)
     return token
   } catch (error) {
     console.error('Refresh token error:', {
