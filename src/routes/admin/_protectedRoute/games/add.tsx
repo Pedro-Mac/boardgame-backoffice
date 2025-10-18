@@ -30,7 +30,7 @@ function RouteComponent() {
         <DialogHeader>
           <DialogTitle>Add game</DialogTitle>
         </DialogHeader>
-        <GameForm />
+        <GameForm submissionType="create" />
       </DialogContent>
     </Dialog>
   )

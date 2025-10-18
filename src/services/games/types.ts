@@ -24,6 +24,17 @@ export interface AddGameRequest {
   created_by: number
 }
 
+export interface EditGameRequest {
+  title?: string
+  description?: string
+  min_players?: number
+  max_players?: number
+  price?: number
+  duration?: string
+  is_available?: boolean
+  updated_by: number
+}
+
 export interface GameListResponse {
   games: Game[]
   total: number

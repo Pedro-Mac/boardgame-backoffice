@@ -2,6 +2,7 @@ import GameForm from '@/components/forms/GameForm'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -55,6 +56,7 @@ function RouteComponent() {
       }}
     >
       <DialogContent>
+        <DialogDescription>Edit game details</DialogDescription>
         <DialogHeader>
           <DialogTitle>Edit</DialogTitle>
         </DialogHeader>
@@ -67,6 +69,7 @@ function RouteComponent() {
           price={price}
           duration={Number(duration.replace(' minutes', ''))}
           is_available={is_available ? 'available' : 'not_available'}
+          submissionType="edit"
         />
       </DialogContent>
     </Dialog>

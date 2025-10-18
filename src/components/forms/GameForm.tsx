@@ -13,9 +13,11 @@ import {
 import { Input } from '../ui/input'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Button } from '../ui/button'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { addGame } from '@/services/games/addGame'
 import { useUserStore } from '@/store/user'
+import { useAuthStore } from '@/store/auth'
+import { editGame } from '@/services/games/editGame'
 
 const formSchema = z.object({
   title: z.string().min(1, 'Name is required'),
@@ -35,6 +37,7 @@ const GameForm = ({
   duration,
   price,
   is_available,
+  submissionType,
 }: {
   title?: string
   description?: string
@@ -43,9 +46,14 @@ const GameForm = ({
   duration?: number
   price?: number
   is_available?: 'available' | 'not_available'
+  submissionType: 'create' | 'edit'
 }) => {
   const userStore = useUserStore()
+  const { auth } = useAuthStore()
   const navigate = useNavigate()
+  const params = useParams({
+    from: '/admin/_protectedRoute/games/$gameId/edit',
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,8 +69,12 @@ const GameForm = ({
   })
 
   async function handleSubmit(data: z.infer<typeof formSchema>) {
-    console.log('Form submitted with data:', data)
-    await addGame({
+    if (!auth?.access_token) {
+      console.error('No access token available')
+      return
+    }
+
+    const gameData = {
       title: data.title,
       description: data.description || '',
       min_players: data.min_players,
@@ -70,8 +82,30 @@ const GameForm = ({
       duration: `${data.duration} minutes`,
       price: data.price,
       is_available: data.is_available === 'available',
-      created_by: userStore.authUser?.id ? Number(userStore.authUser.id) : 0,
-    })
+    }
+
+    if (submissionType === 'edit' && Number(params.gameId) > 0) {
+      await editGame(
+        params.gameId,
+        {
+          ...gameData,
+        },
+        auth.access_token
+      )
+      return
+    }
+
+    if (submissionType === 'create') {
+      await addGame(
+        {
+          ...gameData,
+          created_by: userStore.authUser?.id
+            ? Number(userStore.authUser.id)
+            : 0,
+        },
+        auth.access_token
+      )
+    }
 
     navigate({ to: '/admin/games', search: { limit: 10, offset: 0 } })
   }
